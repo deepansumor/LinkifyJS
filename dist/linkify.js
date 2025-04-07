@@ -29,7 +29,7 @@ function handleSelection(range, name, href, config) {
     a.href = href;
     a.innerText = name;
     // Apply additional custom attributes from config
-    for (const [key, value] of Object.entries(config)) {
+    for (const [key, value] of Object.entries((config.attributes || {}))) {
         // Only apply if key is not one of the known reserved keys
         if (!['tooltip', 'label', 'input', 'submit', 'remove'].includes(key)) {
             a.setAttribute(key, value);
@@ -186,8 +186,11 @@ function initTooltip(range, selectedText, config = {}, position, existingLink) {
         Object.assign(removeBtn.style, removeButtonStyles, styles.remove);
         tooltip.appendChild(removeBtn);
     }
+    if (!(config.container instanceof HTMLElement)) {
+        config.container = document.body;
+    }
     // Attach tooltip to the DOM early to get dimensions
-    document.body.appendChild(tooltip);
+    config.container.appendChild(tooltip);
     const tooltipRect = tooltip.getBoundingClientRect();
     tooltip.style.visibility = 'visible';
     // === Positioning Logic ===
@@ -208,6 +211,25 @@ function initTooltip(range, selectedText, config = {}, position, existingLink) {
         top = 8;
     tooltip.style.top = `${top}px`;
     tooltip.style.left = `${left}px`;
+    // === Close on outside click ===
+    const onClickOutside = (e) => {
+        if (!tooltip.contains(e.target)) {
+            tooltip.remove();
+            document.removeEventListener('mousedown', onClickOutside);
+        }
+    };
+    // Delay binding to avoid instant removal when clicking selection
+    setTimeout(() => {
+        document.addEventListener('mousedown', onClickOutside);
+    }, 0);
+    // Close tooltip on Escape key press
+    const escKeyHandler = (e) => {
+        if (e.key === 'Escape') {
+            tooltip.remove();
+            document.removeEventListener('keydown', escKeyHandler);
+        }
+    };
+    document.addEventListener('keydown', escKeyHandler);
 }
 
 

@@ -158,8 +158,13 @@ export function initTooltip(
         tooltip.appendChild(removeBtn);
     }
 
+    if (!(config.container instanceof HTMLElement)) {
+        config.container = document.body;
+    }
+
     // Attach tooltip to the DOM early to get dimensions
-    document.body.appendChild(tooltip);
+    config.container.appendChild(tooltip);
+
     const tooltipRect = tooltip.getBoundingClientRect();
     tooltip.style.visibility = 'visible';
 
@@ -183,4 +188,28 @@ export function initTooltip(
 
     tooltip.style.top = `${top}px`;
     tooltip.style.left = `${left}px`;
+
+    // === Close on outside click ===
+    const onClickOutside = (e: MouseEvent) => {
+        if (!tooltip.contains(e.target as Node)) {
+            tooltip.remove();
+            document.removeEventListener('mousedown', onClickOutside);
+        }
+    };
+
+    // Delay binding to avoid instant removal when clicking selection
+    setTimeout(() => {
+        document.addEventListener('mousedown', onClickOutside);
+    }, 0);
+
+    // Close tooltip on Escape key press
+    const escKeyHandler = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+            tooltip.remove();
+            document.removeEventListener('keydown', escKeyHandler);
+        }
+    };
+
+    document.addEventListener('keydown', escKeyHandler);
+
 }

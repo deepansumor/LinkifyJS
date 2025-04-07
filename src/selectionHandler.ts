@@ -20,7 +20,7 @@ export function handleSelection(
     a.innerText = name;
 
     // Apply additional custom attributes from config
-    for (const [key, value] of Object.entries(config as Record<string, string>)) {
+    for (const [key, value] of Object.entries((config.attributes || {}) as Record<string, string>)) {
         // Only apply if key is not one of the known reserved keys
         if (!['tooltip', 'label', 'input', 'submit', 'remove'].includes(key)) {
             a.setAttribute(key, value);

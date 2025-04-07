@@ -3,6 +3,7 @@ type LinkifyConfig = {
     labelURL?: string;
     placeholderText?: string;
     placeholderURL?: string;
+    container?:HTMLElement;
     classNames?: {
         tooltip?: string;
         label?: string;
@@ -17,5 +18,6 @@ type LinkifyConfig = {
         submit?: Partial<CSSStyleDeclaration>;
         remove?: Partial<CSSStyleDeclaration>;
     };
+    attributes?:{}
 };
 
