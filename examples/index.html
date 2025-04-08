@@ -32,6 +32,7 @@
 </head>
 <body>
   <h1>🔗 LinkifyJS Demo</h1>
+  
   <div class="editable-container" contenteditable="true">
     Select any part of this text to convert it into a link using LinkifyJS. You can also edit or remove an existing link.
   </div>
@@ -44,6 +45,7 @@
       labelURL: "URL",
       placeholderText: "Text here...",
       placeholderURL: "https://",
+      container:document.querySelector(".editable-container"),
       styles: {
         tooltip: {
           background: "#fefefe",

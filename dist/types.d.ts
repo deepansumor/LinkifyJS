@@ -18,5 +18,8 @@ type LinkifyConfig = {
         submit?: Partial<CSSStyleDeclaration>;
         remove?: Partial<CSSStyleDeclaration>;
     };
-    attributes?: {};
+    attributes?: {
+        [key: string | number | symbol]: any;
+    };
+    done?: () => void;
 };
