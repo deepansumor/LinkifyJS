@@ -13,6 +13,7 @@ LinkifyJS is a lightweight JavaScript library that allows users to select text w
 ✅ Auto-adjusts tooltip position based on available space  
 ✅ Automatically closes tooltip on `Escape` or outside click  
 ✅ Supports `container` for tooltip attachment and `attributes` for custom link attributes  
+✅ Supports `done` callback when a hyperlink is inserted  
 
 ---
 
@@ -48,7 +49,8 @@ LinkifyJS.init(document.querySelector(".editable-container"), {
     placeholderURL: "https://example.com",
     attributes: {
         target: "_blank",
-        rel: "noopener noreferrer"
+        rel: "noopener noreferrer",
+        'data-source': 'linkify'
     },
     container: document.querySelector("#custom-container"),
     classNames: {
@@ -63,6 +65,9 @@ LinkifyJS.init(document.querySelector(".editable-container"), {
         input: { fontSize: "16px" },
         submit: { background: "#2196f3" },
         remove: { background: "#e91e63" }
+    },
+    done: () => {
+        console.log("Link inserted!");
     }
 });
 ```
@@ -74,16 +79,17 @@ LinkifyJS.init(document.querySelector(".editable-container"), {
 ### `LinkifyJS.init(container: HTMLElement, config?: LinkifyConfig)`
 Initializes the LinkifyJS tooltip on a container.
 
-| Option         | Type                  | Description |
-|----------------|-----------------------|-------------|
-| `labelText`    | `string`              | Label text for the name field |
-| `labelURL`     | `string`              | Label text for the URL field |
-| `placeholderText` | `string`           | Placeholder for name input |
-| `placeholderURL` | `string`            | Placeholder for URL input |
-| `attributes`   | `object`              | Attributes to apply to the generated `<a>` tag (e.g., `{ target: "_blank" }`) |
-| `container`    | `HTMLElement`         | DOM element where the tooltip will be appended (defaults to `document.body`) |
-| `classNames`   | `object`              | Optional CSS classes for tooltip elements |
-| `styles`       | `object`              | Optional inline styles for tooltip elements |
+| Option            | Type                  | Description |
+|-------------------|-----------------------|-------------|
+| `labelText`       | `string`              | Label text for the name field |
+| `labelURL`        | `string`              | Label text for the URL field |
+| `placeholderText` | `string`              | Placeholder for name input |
+| `placeholderURL`  | `string`              | Placeholder for URL input |
+| `attributes`      | `object`              | Attributes to apply to the generated `<a>` tag (e.g., `{ target: "_blank" }`) |
+| `container`       | `HTMLElement`         | DOM element where the tooltip will be appended (defaults to `document.body`) |
+| `classNames`      | `object`              | Optional CSS classes for tooltip elements |
+| `styles`          | `object`              | Optional inline styles for tooltip elements |
+| `done`            | `function`            | Callback function called after the link is inserted |
 
 ---
 
